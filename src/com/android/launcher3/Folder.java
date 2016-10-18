@@ -290,7 +290,9 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     public void modifyProtectedApps(boolean protect) {
         ArrayList<ComponentName> components = new ArrayList<ComponentName>();
         for (Pair<ComponentName, CharSequence> item : getComponents()) {
-            components.add(item.first);
+            if (item.first != null) {
+                components.add(item.first);
+            }
         }
 
         Intent intent = new Intent();
@@ -1429,6 +1431,18 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             }
         }
 
+        return null;
+    }
+
+    public ShortcutInfo getShortcutForPosition(int position) {
+        if (position < 0 || position >= mItemsInReadingOrder.size()) {
+            return null;
+        }
+        View v = mItemsInReadingOrder.get(position);
+        Object tag = v.getTag();
+        if (tag instanceof ShortcutInfo) {
+            return (ShortcutInfo) tag;
+        }
         return null;
     }
 
